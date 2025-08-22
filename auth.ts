@@ -12,13 +12,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        console.log("Authorizing user with credentials:", credentials);
         if (!credentials?.email || !credentials?.password) return null;
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email as string },
           include: { tenant: true },
         });
-        if (!user) return null;
+
+        if (!user) {
+          console.log("User not found");
+          return null;
+        }
         const valid = await verifyPassword(
           user.password,
           credentials.password as string
