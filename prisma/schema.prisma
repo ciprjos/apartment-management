@@ -1,0 +1,299 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Apartment {
+  id                   String                @id @default(cuid())
+  apartment_key        String                @unique
+  name                 String
+  address              String
+  city                 String
+  state                String
+  postalCode           String
+  country              String
+  numberOfRooms        Int
+  amenities            String[]
+  rooms                Room[]
+  leases               Lease[]
+  maintenanceRequests  MaintenanceRequest[]
+  createdById          String?
+  updatedById          String?
+  createdBy            User?                 @relation("ApartmentCreatedBy", fields: [createdById], references: [id])
+  updatedBy            User?                 @relation("ApartmentUpdatedBy", fields: [updatedById], references: [id])
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  configs              ApartmentConfig[]
+  environmentVariables EnvironmentVariable[]
+}
+
+model ApartmentConfig {
+  id          String    @id @default(cuid())
+  apartmentId String
+  apartment   Apartment @relation(fields: [apartmentId], references: [id])
+  name        String
+  value       String
+  description String?
+  createdById String?
+  updatedById String?
+  createdBy   User?     @relation("ApartmentConfigCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?     @relation("ApartmentConfigUpdatedBy", fields: [updatedById], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model EnvironmentVariable {
+  id          String     @id @default(cuid())
+  key         String
+  value       String
+  description String?
+  apartmentId String?
+  apartment   Apartment? @relation(fields: [apartmentId], references: [id])
+  createdById String?
+  updatedById String?
+  createdBy   User?      @relation("EnvironmentVariableCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?      @relation("EnvironmentVariableUpdatedBy", fields: [updatedById], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Room {
+  id          String    @id @default(cuid())
+  apartmentId String
+  apartment   Apartment @relation(fields: [apartmentId], references: [id])
+  name        String
+  type        RoomType
+  sizeSqFt    Float
+  floor       Int
+  occupancy   Int
+  hasWindow   Boolean
+  createdById String?
+  updatedById String?
+  createdBy   User?     @relation("RoomCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?     @relation("RoomUpdatedBy", fields: [updatedById], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model User {
+  id                          String                @id @default(cuid())
+  email                       String                @unique
+  password                    String
+  name                        String
+  phone                       String?               @unique
+  leases                      Lease[]
+  maintenanceRequests         MaintenanceRequest[]
+  role                        UserRole
+  chats                       Chat[]
+  readByMessage               Message[]             @relation("readByMessage")
+  messages                    Message[]             @relation("sentMessages")
+  tenant                      Tenant?
+  apartmentsCreated           Apartment[]           @relation("ApartmentCreatedBy")
+  apartmentsUpdated           Apartment[]           @relation("ApartmentUpdatedBy")
+  roomsCreated                Room[]                @relation("RoomCreatedBy")
+  roomsUpdated                Room[]                @relation("RoomUpdatedBy")
+  tenantsCreated              Tenant[]              @relation("TenantCreatedBy")
+  tenantsUpdated              Tenant[]              @relation("TenantUpdatedBy")
+  leasesCreated               Lease[]               @relation("LeaseCreatedBy")
+  leasesUpdated               Lease[]               @relation("LeaseUpdatedBy")
+  billingsCreated             Billing[]             @relation("BillingCreatedBy")
+  billingsUpdated             Billing[]             @relation("BillingUpdatedBy")
+  paymentsCreated             Payment[]             @relation("PaymentCreatedBy")
+  paymentsUpdated             Payment[]             @relation("PaymentUpdatedBy")
+  maintenanceRequestsCreated  MaintenanceRequest[]  @relation("MaintenanceRequestCreatedBy")
+  maintenanceRequestsUpdated  MaintenanceRequest[]  @relation("MaintenanceRequestUpdatedBy")
+  chatsCreated                Chat[]                @relation("ChatCreatedBy")
+  chatsUpdated                Chat[]                @relation("ChatUpdatedBy")
+  messagesCreated             Message[]             @relation("MessageCreatedBy")
+  messagesUpdated             Message[]             @relation("MessageUpdatedBy")
+  apartmentConfigsCreated     ApartmentConfig[]     @relation("ApartmentConfigCreatedBy")
+  apartmentConfigsUpdated     ApartmentConfig[]     @relation("ApartmentConfigUpdatedBy")
+  environmentVariablesCreated EnvironmentVariable[] @relation("EnvironmentVariableCreatedBy")
+  environmentVariablesUpdated EnvironmentVariable[] @relation("EnvironmentVariableUpdatedBy")
+  createdAt                   DateTime              @default(now())
+  updatedAt                   DateTime              @updatedAt
+}
+
+model Tenant {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  leases      Lease[]
+  fullName    String
+  phone       String?
+  email       String?
+  createdById String?
+  updatedById String?
+  createdBy   User?    @relation("TenantCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?    @relation("TenantUpdatedBy", fields: [updatedById], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Lease {
+  id          String      @id @default(cuid())
+  userId      String
+  tenantId    String?
+  apartmentId String
+  user        User        @relation(fields: [userId], references: [id])
+  tenant      Tenant?     @relation(fields: [tenantId], references: [id])
+  apartment   Apartment   @relation(fields: [apartmentId], references: [id])
+  startDate   DateTime
+  endDate     DateTime
+  rentAmount  Float
+  status      LeaseStatus @default(ACTIVE)
+  payments    Payment[]
+  billings    Billing[]
+  createdById String?
+  updatedById String?
+  createdBy   User?       @relation("LeaseCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?       @relation("LeaseUpdatedBy", fields: [updatedById], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Billing {
+  id          String        @id @default(cuid())
+  leaseId     String
+  lease       Lease         @relation(fields: [leaseId], references: [id])
+  description String
+  amount      Float
+  dueDate     DateTime
+  status      BillingStatus @default(PENDING)
+  payments    Payment[]
+  createdById String?
+  updatedById String?
+  createdBy   User?         @relation("BillingCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?         @relation("BillingUpdatedBy", fields: [updatedById], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  referenceNumber String        @unique
+  leaseId         String
+  lease           Lease         @relation(fields: [leaseId], references: [id])
+  billingId       String?
+  billing         Billing?      @relation(fields: [billingId], references: [id])
+  amount          Float
+  paidAt          DateTime
+  method          PaymentMethod
+  status          PaymentStatus
+  createdById     String?
+  updatedById     String?
+  createdBy       User?         @relation("PaymentCreatedBy", fields: [createdById], references: [id])
+  updatedBy       User?         @relation("PaymentUpdatedBy", fields: [updatedById], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model MaintenanceRequest {
+  id          String            @id @default(cuid())
+  apartmentId String
+  apartment   Apartment         @relation(fields: [apartmentId], references: [id])
+  userId      String
+  user        User              @relation(fields: [userId], references: [id])
+  title       String
+  description String
+  status      MaintenanceStatus @default(PENDING)
+  createdById String?
+  updatedById String?
+  createdBy   User?             @relation("MaintenanceRequestCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?             @relation("MaintenanceRequestUpdatedBy", fields: [updatedById], references: [id])
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model Chat {
+  id          String    @id @default(cuid())
+  users       User[]
+  messages    Message[]
+  createdById String?
+  updatedById String?
+  createdBy   User?     @relation("ChatCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?     @relation("ChatUpdatedBy", fields: [updatedById], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  chatId      String
+  chat        Chat     @relation(fields: [chatId], references: [id])
+  senderId    String
+  sender      User     @relation("sentMessages", fields: [senderId], references: [id])
+  readById    String?
+  readBy      User?    @relation("readByMessage", fields: [readById], references: [id])
+  content     String
+  read        Boolean  @default(false)
+  createdById String?
+  updatedById String?
+  createdBy   User?    @relation("MessageCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?    @relation("MessageUpdatedBy", fields: [updatedById], references: [id])
+  sentAt      DateTime @default(now())
+}
+
+enum MaintenanceStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+}
+
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+  BANK_TRANSFER
+  ONLINE
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum BillingStatus {
+  PENDING
+  PAID
+  OVERDUE
+  CANCELLED
+  DISPUTED
+}
+
+enum LeaseStatus {
+  ACTIVE
+  TERMINATED
+  EXPIRED
+  PENDING
+  CANCELLED
+}
+
+enum RoomType {
+  STUDIO
+  ONE_BEDROOM
+  TWO_BEDROOM
+  THREE_BEDROOM
+  FOUR_BEDROOM
+  LOFT
+  DUPLEX
+  PENTHOUSE
+  OTHER
+}
+
+enum UserRole {
+  LANDLORD
+  TENANT
+}
