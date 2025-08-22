@@ -7,6 +7,6 @@ export async function login({ email, password }: LoginCredentials) {
     redirect: true,
     email: email,
     password: password,
-    redirectTo: "/dashboard",
+    redirectTo: "/portal/dashboard",
   });
 }
