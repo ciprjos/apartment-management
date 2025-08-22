@@ -20,7 +20,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
 
         if (!user) {
-          console.log("User not found");
           return null;
         }
 
@@ -28,7 +27,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           credentials.password as string,
           user.password
         );
-        console.log(`valid ${valid}`);
+
         if (!valid) return null;
         // Remove password before returning user object
 
