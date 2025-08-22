@@ -1,12 +1,27 @@
 "use server";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { LoginCredentials } from "@/types/auth";
 
 export async function login({ email, password }: LoginCredentials) {
-  await signIn("credentials", {
-    redirect: true,
+  const result = await signIn("credentials", {
+    redirect: false,
     email: email,
     password: password,
     redirectTo: "/portal/dashboard",
   });
+
+  if (result.error) {
+    console.error("Login error:", result.error);
+    return {
+      error: result.error,
+    };
+  }
+
+  return {
+    user: result.user,
+  };
+}
+
+export async function logout() {
+  await signOut({ redirectTo: "/login" });
 }

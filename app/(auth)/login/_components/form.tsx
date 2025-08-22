@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { login } from "@/server-actions/auth-action";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export function LoginForm({
   className,
@@ -25,6 +26,13 @@ export function LoginForm({
       password: "",
     },
   });
+
+  useEffect(() => {
+    if (form.formState.isSubmitSuccessful) {
+      // Reset the form or perform any other actions on successful login
+      console.log(`error: ${JSON.stringify(form.formState)}`);
+    }
+  }, [form.formState.errors]);
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     await login(values);
@@ -87,7 +95,15 @@ export function LoginForm({
                     )}
                   />
                 </div>
-                <Button type="submit" className="w-full">
+                <Button
+                  type="submit"
+                  className={`w-full ${
+                    form.formState.isSubmitting
+                      ? "cursor-wait"
+                      : "cursor-pointer"
+                  }`}
+                  disabled={form.formState.isSubmitting}
+                >
                   Login
                 </Button>
 

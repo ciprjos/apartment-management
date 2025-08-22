@@ -11,7 +11,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials): Promise<User | null> {
         if (!credentials?.email || !credentials?.password) return null;
 
         const user = await prisma.user.findUnique({
@@ -28,7 +28,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           user.password
         );
 
-        if (!valid) return null;
+        if (!valid) {
+          return null;
+        }
         // Remove password before returning user object
 
         const userDetails: User = {
