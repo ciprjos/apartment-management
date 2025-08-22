@@ -3,11 +3,10 @@ import { signIn } from "@/auth";
 import { LoginCredentials } from "@/types/auth";
 
 export async function login({ email, password }: LoginCredentials) {
-  const result = signIn("credentials", {
-    redirect: false,
+  await signIn("credentials", {
+    redirect: true,
     email: email,
     password: password,
+    redirectTo: "/dashboard",
   });
-
-  console.log(result);
 }
