@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import prisma from "./lib/prisma";
-import argon2 from "argon2";
 import { User } from "./types/user";
+import { prisma } from "./lib/prisma";
+import { verifyPassword } from "./lib/password";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -19,7 +19,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           include: { tenant: true },
         });
         if (!user) return null;
-        const valid = await argon2.verify(
+        const valid = await verifyPassword(
           user.password,
           credentials.password as string
         );
