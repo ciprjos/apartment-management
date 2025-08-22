@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { APPLICATION_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { GalleryVerticalEnd } from "lucide-react";
 
@@ -21,9 +22,11 @@ export function RegisterForm({
                 <div className="flex size-8 items-center justify-center rounded-md">
                   <GalleryVerticalEnd className="size-6" />
                 </div>
-                <span className="sr-only">Acme Inc.</span>
+                <span className="sr-only">{APPLICATION_NAME}</span>
               </a>
-              <h1 className="text-xl font-bold">Welcome to Acme Inc.</h1>
+              <h1 className="text-xl font-bold">
+                Welcome to {APPLICATION_NAME}
+              </h1>
             </div>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
