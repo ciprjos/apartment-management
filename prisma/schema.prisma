@@ -121,6 +121,14 @@ model User {
   apartmentConfigsUpdated     ApartmentConfig[]     @relation("ApartmentConfigUpdatedBy")
   environmentVariablesCreated EnvironmentVariable[] @relation("EnvironmentVariableCreatedBy")
   environmentVariablesUpdated EnvironmentVariable[] @relation("EnvironmentVariableUpdatedBy")
+  // Add permission relationships
+  permissions                 UserPermission[]      @relation("UserPermission")
+  permissionsCreated          Permission[]          @relation("PermissionCreatedBy")
+  permissionsUpdated          Permission[]          @relation("PermissionUpdatedBy")
+  rolePermissionsCreated      RolePermission[]      @relation("RolePermissionCreatedBy")
+  rolePermissionsUpdated      RolePermission[]      @relation("RolePermissionUpdatedBy")
+  userPermissionsCreated      UserPermission[]      @relation("UserPermissionCreatedBy")
+  userPermissionsUpdated      UserPermission[]      @relation("UserPermissionUpdatedBy")
   createdAt                   DateTime              @default(now())
   updatedAt                   DateTime              @updatedAt
 }
@@ -245,6 +253,67 @@ model Message {
   sentAt      DateTime @default(now())
 }
 
+// Permission System Models
+
+model Permission {
+  id          String  @id @default(cuid())
+  module      String // Module name (e.g., "apartment", "user", "billing")
+  action      String // Action (e.g., "create", "read", "update", "delete", "manage")
+  name        String // Human-readable name (e.g., "Create Apartments")
+  description String?
+
+  // Relationships
+  rolePermissions RolePermission[]
+  userPermissions UserPermission[]
+
+  // Audit fields
+  createdById String?
+  updatedById String?
+  createdBy   User?    @relation("PermissionCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?    @relation("PermissionUpdatedBy", fields: [updatedById], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([module, action])
+}
+
+model RolePermission {
+  id           String     @id @default(cuid())
+  role         UserRole // Reference to existing UserRole enum
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  granted      Boolean    @default(true) // Can be revoked for specific roles
+
+  // Audit fields
+  createdById String?
+  updatedById String?
+  createdBy   User?    @relation("RolePermissionCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?    @relation("RolePermissionUpdatedBy", fields: [updatedById], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([role, permissionId])
+}
+
+model UserPermission {
+  id           String     @id @default(cuid())
+  userId       String
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  granted      Boolean    @default(true) // Can be granted or revoked for specific users
+
+  // Audit fields
+  createdById String?
+  updatedById String?
+  createdBy   User?    @relation("UserPermissionCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User?    @relation("UserPermissionUpdatedBy", fields: [updatedById], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation("UserPermission", fields: [userId], references: [id])
+
+  @@unique([userId, permissionId])
+}
+
 enum MaintenanceStatus {
   PENDING
   IN_PROGRESS
@@ -296,4 +365,6 @@ enum RoomType {
 enum UserRole {
   LANDLORD
   TENANT
+  SUPER_ADMIN
+  ADMIN
 }
