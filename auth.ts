@@ -4,6 +4,7 @@ import { User } from "./types/user";
 import { prisma } from "./lib/prisma";
 import { verifyPassword } from "./lib/password";
 
+export const runtime = "nodejs";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
@@ -25,7 +26,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         const valid = await verifyPassword(
           credentials.password as string,
-          user.password
+          user.password as string
         );
 
         if (!valid) {
@@ -51,6 +52,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async session({ session, token }) {
       if (token) {
+        console.table(token);
         session.user.email = token.email as string;
         session.user.id = token.id as string;
         session.user.name = token.name as string | null;
@@ -60,6 +62,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async jwt({ token, user }) {
       if (user) {
+        console.table(token);
         token.user = user;
         token.email = user.email;
         token.id = user.id;
