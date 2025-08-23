@@ -8,7 +8,6 @@ export async function middleware(request: NextRequest) {
 
   const isLoginPage = pathname.startsWith("/login");
   const isProtected = pathname.startsWith("/portal");
-
   // If user is not logged in and tries to access protected page → redirect to /login
   if (!session && isProtected) {
     return NextResponse.redirect(new URL("/login", request.url));
