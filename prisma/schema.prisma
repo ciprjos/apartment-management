@@ -119,6 +119,7 @@ model User {
   phone                       String?               @unique
   apartment                   Apartment?            @relation("ApartmentUsers", fields: [apartmentId], references: [id])
   apartmentId                 String?
+  status                      UserStatus            @default(ACTIVE)
   leases                      Lease[]
   maintenanceRequests         MaintenanceRequest[]
   role                        UserRole
@@ -396,4 +397,10 @@ enum UserRole {
   TENANT
   SUPER_ADMIN
   ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  DEACTIVATED
 }
