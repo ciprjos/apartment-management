@@ -28,6 +28,9 @@ model Apartment {
   rooms                Room[]
   leases               Lease[]
   maintenanceRequests  MaintenanceRequest[]
+  landlordId           String?
+  landlord             Landlord?             @relation(fields: [landlordId], references: [id])
+  users                User[]                @relation("ApartmentUsers")
   createdById          String?
   updatedById          String?
   createdBy            User?                 @relation("ApartmentCreatedBy", fields: [createdById], references: [id])
@@ -36,6 +39,28 @@ model Apartment {
   updatedAt            DateTime              @updatedAt
   configs              ApartmentConfig[]
   environmentVariables EnvironmentVariable[]
+}
+
+model Landlord {
+  id           String      @id @default(cuid())
+  userId       String?     @unique
+  user         User?       @relation(fields: [userId], references: [id])
+  apartments   Apartment[]
+  firstName    String
+  lastName     String
+  middleName   String?
+  email        String      @unique
+  phone        String?
+  address      String?
+  dateOfBirth  DateTime?
+  verified     Boolean     @default(false)
+  profileImage String?
+  companyName  String?
+  companyRegNo String?
+  bankAccount  String?
+  taxId        String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
 
 model ApartmentConfig {
@@ -92,6 +117,8 @@ model User {
   password                    String
   name                        String
   phone                       String?               @unique
+  apartment                   Apartment?            @relation("ApartmentUsers", fields: [apartmentId], references: [id])
+  apartmentId                 String?
   leases                      Lease[]
   maintenanceRequests         MaintenanceRequest[]
   role                        UserRole
@@ -129,6 +156,7 @@ model User {
   rolePermissionsUpdated      RolePermission[]      @relation("RolePermissionUpdatedBy")
   userPermissionsCreated      UserPermission[]      @relation("UserPermissionCreatedBy")
   userPermissionsUpdated      UserPermission[]      @relation("UserPermissionUpdatedBy")
+  landlord                    Landlord?
   createdAt                   DateTime              @default(now())
   updatedAt                   DateTime              @updatedAt
 }
