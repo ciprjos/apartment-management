@@ -1,27 +1,28 @@
 "use server";
 import { signIn, signOut } from "@/auth";
+import { prisma } from "@/lib/prisma";
 import { LoginCredentials } from "@/types/auth";
 
 export async function login({ email, password }: LoginCredentials) {
-  const result = await signIn("credentials", {
-    redirect: false,
+  return await signIn("credentials", {
+    redirect: true,
     email: email,
     password: password,
     redirectTo: "/portal/dashboard",
   });
-
-  if (result.error) {
-    console.error("Login error:", result.error);
-    return {
-      error: result.error,
-    };
-  }
-
-  return {
-    user: result.user,
-  };
 }
 
 export async function logout() {
   await signOut({ redirectTo: "/login" });
+}
+
+export async function getUserRole(id: string) {
+  return await prisma.user.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      role: true,
+    },
+  });
 }
