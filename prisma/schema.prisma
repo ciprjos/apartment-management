@@ -200,20 +200,21 @@ model Lease {
 }
 
 model Billing {
-  id          String        @id @default(cuid())
-  leaseId     String
-  lease       Lease         @relation(fields: [leaseId], references: [id])
-  description String
-  amount      Float
-  dueDate     DateTime
-  status      BillingStatus @default(PENDING)
-  payments    Payment[]
-  createdById String?
-  updatedById String?
-  createdBy   User?         @relation("BillingCreatedBy", fields: [createdById], references: [id])
-  updatedBy   User?         @relation("BillingUpdatedBy", fields: [updatedById], references: [id])
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id            String        @id @default(cuid())
+  billingNumber String        @unique
+  leaseId       String
+  lease         Lease         @relation(fields: [leaseId], references: [id])
+  description   String
+  amount        Float
+  dueDate       DateTime
+  status        BillingStatus @default(PENDING)
+  payments      Payment[]
+  createdById   String?
+  updatedById   String?
+  createdBy     User?         @relation("BillingCreatedBy", fields: [createdById], references: [id])
+  updatedBy     User?         @relation("BillingUpdatedBy", fields: [updatedById], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 model Payment {
