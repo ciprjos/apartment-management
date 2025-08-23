@@ -52,24 +52,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async session({ session, token }) {
       if (token) {
-        console.table(token);
         session.user.email = token.email as string;
         session.user.id = token.id as string;
         session.user.name = token.name as string | null;
         session.user.image = token.image as string | null;
+        session.user.role = token.role as string;
       }
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
-        console.table(token);
         token.user = user;
         token.email = user.email;
         token.id = user.id;
         token.name = user.name;
         token.image = user.image;
+        token.role = user.role;
       }
       return token;
     },
+  },
+  pages: {
+    signIn: "/login",
+    error: "/login",
+    signOut: "/login",
   },
 });
