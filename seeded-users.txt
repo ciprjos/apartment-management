@@ -1,0 +1,55 @@
+# Seeded User Credentials
+
+This file contains the email and plain text password for each landlord and tenant created by the seed script.
+
+[LANDLORD] Email: Janiya.Gleichner68@gmail.com | Password: cxXsHPMQMApFyZV
+[LANDLORD] Email: Cristina.Aufderhar@yahoo.com | Password: i3TwqfcgjU8eHVY
+[LANDLORD] Email: Brant_Effertz66@gmail.com | Password: nSbx2wRhuuIb6SZ
+[LANDLORD] Email: Gwendolyn.Stiedemann53@yahoo.com | Password: ICK8ICpDXlvtbVR
+[LANDLORD] Email: Kaylin_Rowe58@yahoo.com | Password: DOfhIyVKuo6fgXd
+[LANDLORD] Email: Alysson.Halvorson9@hotmail.com | Password: p3vgzYcrVvQ2Zk4
+[LANDLORD] Email: Mariah_Breitenberg55@yahoo.com | Password: rOuCGkj3CBWqmL6
+[LANDLORD] Email: Wilhelm_Trantow@gmail.com | Password: _JphLNwGA7jHpH6
+[TENANT] Email: Craig_Padberg65@yahoo.com | Password: W9cUPJbUoZ6Yd1z
+[TENANT] Email: Kurt.Leannon@hotmail.com | Password: wGsX3Z4qGTM3w3q
+[TENANT] Email: Selmer.Gibson@yahoo.com | Password: c7mNydFE2utA_Zb
+[TENANT] Email: Amy_Parisian27@gmail.com | Password: 51k2OIUmAGtllXA
+[TENANT] Email: Ewald_Mohr@gmail.com | Password: tCWj53TjoqRgpg7
+[TENANT] Email: Sophia.Koepp@hotmail.com | Password: kT14Vj7b8ZjDDlY
+[TENANT] Email: Melany_Schiller65@hotmail.com | Password: 1kGQ6VXOyXJa2qx
+[TENANT] Email: Alena_Kunde@hotmail.com | Password: dn4AvXHgsOt1ESB
+[TENANT] Email: Audie.Cole@gmail.com | Password: glU_BRLpMa4gM1W
+[TENANT] Email: Maia.Fay@yahoo.com | Password: kzuVZZoFdmWW_aA
+[TENANT] Email: Mark_Morissette25@hotmail.com | Password: wNLvuCxMGVmIaco
+[TENANT] Email: Reyes.Bernier@hotmail.com | Password: sLSPERdYBbLE0th
+[TENANT] Email: Stephania.Weimann@gmail.com | Password: S49CglnCouCsCff
+[TENANT] Email: Kacey.Rohan@yahoo.com | Password: XP3hMEX9SOk6at9
+[TENANT] Email: Cassie.Wunsch@gmail.com | Password: 7NeS9qV4Oh9aPsu
+[TENANT] Email: Theresia.Davis95@hotmail.com | Password: DhHgVeNQlHV192i
+[TENANT] Email: Ari_Heidenreich67@hotmail.com | Password: fMXe4zbynYj8EjZ
+[TENANT] Email: Stacey.Miller@gmail.com | Password: qAqivwV0H2KcI41
+[TENANT] Email: Jayden_Blick38@gmail.com | Password: B7pglzgBhXCaLBL
+[TENANT] Email: Efrain_Armstrong-Stroman41@yahoo.com | Password: ZlUepCsSyYK5Ej3
+[TENANT] Email: Santiago_Jenkins90@gmail.com | Password: Q2ZlPOSnYJXziFN
+[TENANT] Email: Korbin_Zieme@hotmail.com | Password: DIfflq3K1NQxrdt
+[TENANT] Email: Maximilian.Roob@yahoo.com | Password: 9RPoe_9KvIdj4O8
+[TENANT] Email: Constantin.Marvin-Conn79@yahoo.com | Password: hyjl3kQ80cpRZAw
+[TENANT] Email: Mark.Dare-Dicki@hotmail.com | Password: 1DQ611qZzMqcHHq
+[TENANT] Email: Hans_Smith5@gmail.com | Password: n5YTH_G2882p0Ec
+[TENANT] Email: Maggie.Dietrich90@hotmail.com | Password: 7fYN2YBG1_kvaw6
+[TENANT] Email: Karianne.Gerhold20@gmail.com | Password: X3iENuzszVPXvvy
+[TENANT] Email: Emery.Lueilwitz@gmail.com | Password: OhM8ARb66tVoznw
+[TENANT] Email: Jovanny.Beier@hotmail.com | Password: Biq2ZCAHP6zVmJi
+[TENANT] Email: Otho_Gleason@gmail.com | Password: BHceGAZydfp9AyL
+[TENANT] Email: Esmeralda_Rowe91@gmail.com | Password: HBDg7K9JEyhfxjS
+[TENANT] Email: Dane.Muller@gmail.com | Password: KzegqxrzHFvgHGW
+[TENANT] Email: Lempi_Wilderman@yahoo.com | Password: ct0eZD0oPoH9P_M
+[TENANT] Email: Noelia_Macejkovic62@yahoo.com | Password: 4Peai_vgZO71sZ8
+[TENANT] Email: Gennaro.Hagenes@gmail.com | Password: CYk1L4RisjyYdrR
+[TENANT] Email: Dena.Cruickshank@yahoo.com | Password: TmT3fAeMg72Zscu
+[TENANT] Email: Juliana.Crooks@hotmail.com | Password: nScQbFeT4ur0kao
+[TENANT] Email: Aubree.Ledner@hotmail.com | Password: vFvCjY4zNyyDRh4
+[TENANT] Email: Rosemarie_Bechtelar@yahoo.com | Password: HheViX7jlVQD_rx
+[TENANT] Email: Nicholas_Schmeler71@hotmail.com | Password: 2vmnvNlNyjaTXnr
+[TENANT] Email: Vanessa_Jaskolski99@hotmail.com | Password: E6r6Nsd6c2IG_ec
+[TENANT] Email: Delores.Strosin@yahoo.com | Password: ZV6rahdVpbDVsCl

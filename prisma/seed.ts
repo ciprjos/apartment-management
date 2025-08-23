@@ -1,6 +1,8 @@
 import { prisma } from "../lib/prisma";
 import argon2 from "argon2";
 import { faker } from "@faker-js/faker";
+import fs from "fs";
+import path from "path";
 
 async function main() {
   // Create random landlords (5-10)
@@ -10,7 +12,8 @@ async function main() {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const email = faker.internet.email({ firstName, lastName });
-    const password = await argon2.hash(faker.internet.password());
+    const plainPassword = faker.internet.password();
+    const password = await argon2.hash(plainPassword);
     const user = await prisma.user.create({
       data: {
         email,
@@ -19,6 +22,11 @@ async function main() {
         role: "LANDLORD",
       },
     });
+    console.log(`[LANDLORD] Email: ${email} | Password: ${plainPassword}`);
+    fs.appendFileSync(
+      path.join(__dirname, "../seeded-users.txt"),
+      `[LANDLORD] Email: ${email} | Password: ${plainPassword}\n`
+    );
     const landlord = await prisma.landlord.create({
       data: {
         userId: user.id,
@@ -44,7 +52,8 @@ async function main() {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const email = faker.internet.email({ firstName, lastName });
-    const password = await argon2.hash(faker.internet.password());
+    const plainPassword = faker.internet.password();
+    const password = await argon2.hash(plainPassword);
     const user = await prisma.user.create({
       data: {
         email,
@@ -53,6 +62,11 @@ async function main() {
         role: "TENANT",
       },
     });
+    console.log(`[TENANT] Email: ${email} | Password: ${plainPassword}`);
+    fs.appendFileSync(
+      path.join(__dirname, "../seeded-users.txt"),
+      `[TENANT] Email: ${email} | Password: ${plainPassword}\n`
+    );
     const tenant = await prisma.tenant.create({
       data: {
         userId: user.id,
