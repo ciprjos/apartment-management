@@ -27,13 +27,6 @@ export function LoginForm({
     },
   });
 
-  useEffect(() => {
-    if (form.formState.isSubmitSuccessful) {
-      // Reset the form or perform any other actions on successful login
-      console.log(`error: ${JSON.stringify(form.formState)}`);
-    }
-  }, [form.formState.errors]);
-
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     await login(values);
   };
