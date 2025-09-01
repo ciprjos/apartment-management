@@ -285,12 +285,39 @@ model Message {
 
 // Permission System Models
 
-model Permission {
-  id          String  @id @default(cuid())
-  module      String // Module name (e.g., "apartment", "user", "billing")
-  action      String // Action (e.g., "create", "read", "update", "delete", "manage")
-  name        String // Human-readable name (e.g., "Create Apartments")
+model Module {
+  id          String      @id @default(cuid())
+  name        String      @unique
   description String?
+  submodules  Submodule[]
+  permissions Permission[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Submodule {
+  id          String      @id @default(cuid())
+  name        String
+  description String?
+  moduleId    String
+  module      Module      @relation(fields: [moduleId], references: [id])
+  permissions Permission[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@unique([moduleId, name])
+}
+
+// Update Permission model to reference Module and Submodule
+model Permission {
+  id           String      @id @default(cuid())
+  moduleId     String?
+  module       Module?     @relation(fields: [moduleId], references: [id])
+  submoduleId  String?
+  submodule    Submodule?  @relation(fields: [submoduleId], references: [id])
+  action       String      // Action (e.g., "create", "read", "update", "delete", "manage")
+  name         String      // Human-readable name (e.g., "Create Apartments")
+  description  String?
 
   // Relationships
   rolePermissions RolePermission[]
@@ -304,7 +331,7 @@ model Permission {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@unique([module, action])
+  @@unique([moduleId, submoduleId, action])
 }
 
 model RolePermission {
