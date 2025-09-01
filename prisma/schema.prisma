@@ -286,38 +286,42 @@ model Message {
 // Permission System Models
 
 model Module {
-  id          String      @id @default(cuid())
-  name        String      @unique
+  id          String       @id @default(cuid())
+  name        String       @unique
   description String?
+  icon        String? // Add icon field
+  url         String?
   submodules  Submodule[]
   permissions Permission[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Submodule {
-  id          String      @id @default(cuid())
+  id          String       @id @default(cuid())
   name        String
   description String?
+  icon        String? // Add icon field
+  url         String?
   moduleId    String
-  module      Module      @relation(fields: [moduleId], references: [id])
+  module      Module       @relation(fields: [moduleId], references: [id])
   permissions Permission[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@unique([moduleId, name])
 }
 
 // Update Permission model to reference Module and Submodule
 model Permission {
-  id           String      @id @default(cuid())
-  moduleId     String?
-  module       Module?     @relation(fields: [moduleId], references: [id])
-  submoduleId  String?
-  submodule    Submodule?  @relation(fields: [submoduleId], references: [id])
-  action       String      // Action (e.g., "create", "read", "update", "delete", "manage")
-  name         String      // Human-readable name (e.g., "Create Apartments")
-  description  String?
+  id          String     @id @default(cuid())
+  moduleId    String?
+  module      Module?    @relation(fields: [moduleId], references: [id])
+  submoduleId String?
+  submodule   Submodule? @relation(fields: [submoduleId], references: [id])
+  action      String // Action (e.g., "create", "read", "update", "delete", "manage")
+  name        String // Human-readable name (e.g., "Create Apartments")
+  description String?
 
   // Relationships
   rolePermissions RolePermission[]
